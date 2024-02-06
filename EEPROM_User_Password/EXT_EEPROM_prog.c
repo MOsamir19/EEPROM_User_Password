@@ -9,10 +9,9 @@
 #include "BIT_MATH.h"
 #include "util/delay.h"
 #include "TWI_int.h"
-#include "TWI_private.h"
 #include "EXT_EEPROM_int.h"
 #include "EXT_EEPROM_private.h"
-#include "LCD_Interface.h"
+
 
 
 
@@ -20,42 +19,6 @@ void H_EXT_EEPROM_void_Init(void)
 {
 	M_TWI_void_Init();
 }
-
-void H_EXT_EEPROM_void_Write_Str(u16 ByteNo , u8* DATA)
-{
-	s8 i = -1 ;
-	u8 BN=ByteNo ;
-       BN--;
-	do
-	{
-		i++ ;
-		BN++;
-		H_EXT_EEPROM_void_Write(BN , DATA[i]);
-
-	}while( DATA[i] != '\0' ) ;
-
-
-}
-
-void H_EXT_EEPROM_void_Read_Str(u16 ByteNo , u8* DATA)
-{
-	s8 i = -1 ;
-	u8 BN=ByteNo ;
-       BN--;
-	do
-	{
-		i++ ;
-		BN++;
-		DATA[i]= H_EXT_EEPROM_void_Read(BN);
-
-
-	}while( DATA[i] != '\0' ) ;
-
-
-}
-
-
-
 
 
 /***************************************************************************/
@@ -82,25 +45,47 @@ u8   H_EXT_EEPROM_void_Read(u16 Copy_u16ByteNo)
 {
 	u8 data = 0;
 	u8 Local_u8Data=0 ;
-
-
 	data=M_TWI_u8_StartCondition();
-	//LCD_voidWriteNumber(data);
 	data=M_TWI_u8_SendSlaveAddressWrite(EXT_EEPROM_ADDRESS_SEQ | (u8)(Copy_u16ByteNo>>8));
-	//LCD_voidWriteNumber(data);
 	data=M_TWI_u8_SendByte((u8)Copy_u16ByteNo);
-	//LCD_voidWriteNumber(data);
 	data=M_TWI_u8_RepeatedStart();
-	//LCD_voidWriteNumber(data);
 	data=M_TWI_u8_SendSlaveAddressRead( EXT_EEPROM_ADDRESS_SEQ | (u8)(Copy_u16ByteNo>>8));
-//	LCD_voidWriteNumber(data);
 	data=M_TWI_u8_ReadByte(&Local_u8Data);
-	//LCD_voidWriteNumber(data);
-
 	M_TWI_void_StopCondition();
-	//LCD_voidWriteNumber(GET_BIT(TWCR_REG,TWCR_TWINT));
-	//LCD_voidWriteNumber(Local_u8Data);
-	_delay_ms(10);
 
 	return Local_u8Data;
 }
+/***************************************************************************/
+void H_EXT_EEPROM_void_Write_Str(u16 ByteNo , u8* DATA)
+{
+	s8 i = -1 ;
+	u8 BN=ByteNo ;
+       BN--;
+	do
+	{
+		i++ ;
+		BN++;
+		H_EXT_EEPROM_void_Write(BN , DATA[i]);
+
+	}while( DATA[i] != '\0' ) ;
+
+
+}
+/***************************************************************************/
+void H_EXT_EEPROM_void_Read_Str(u16 ByteNo , u8* DATA)
+{
+	s8 i = -1 ;
+	u8 BN=ByteNo ;
+       BN--;
+	do
+	{
+		i++ ;
+		BN++;
+		DATA[i]= H_EXT_EEPROM_void_Read(BN);
+
+
+	}while( DATA[i] != '\0' ) ;
+
+
+}
+
