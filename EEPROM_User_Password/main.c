@@ -11,29 +11,18 @@
 #include "STD_TYPES.h"
 #include "BIT_MATH.h"
 #include "util/delay.h"
-
 #include "DIO_Interface.h"
-#include "EXTINT_Interface.h"
 #include "UART_Interface.h"
-#include "SPI_Interface.h"
-#include "GIE_Interface.h"
-#include "ADC_Interface.h"
-#include "TMR0_Interface.h"
-#include "KPD_Interface.h"
-#include "LCD_Interface.h"
 #include "TIMER1_int.h"
 #include "TWI_int.h"
-#include "TWI_private.h"
 #include "EXT_EEPROM_int.h"
-
+#include "LCD_Interface.h"
 #include"string.h"
 
 #ifndef F_CPU
 #define F_CPU 8000000UL
 #endif
-//#include "avr/io.h"
-//#undef  F_CPU
-//#define F_CPU (16000000UL)
+
 
 void System_Init(void);
 void Array_Zero_Init(u8* data);
